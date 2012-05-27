@@ -38,21 +38,24 @@
   <script>
   </script>
   <script type="text/javascript">
-    var opts = {
+    var canvasopts = {
       'radius': 140,
       'pad': 20,
-      'mod': 12
     }
-    function send_info() { 
+    var pcset = {
+      'mod': 12,
+      'pcs': []
+    }
+    function engage() { 
       $('#canvas_container').remove('canvas');
       var pcstr = $("#pcs").val();
-      opts.pcs = pcstr2pcs(opts.mod, pcstr);
-      drawset('canvas_container', opts);
+      pcset.pcs = pcstr2pcs(pcset.mod, pcstr);
+      drawset('canvas_container', pcset, canvasopts);
     }
     $(document).ready(function () {
-      send_info();
+      engage();
       $('#pcs').bind("change", function() {
-        send_info();
+        engage();
       });
       $('#pcs').focus();
     });

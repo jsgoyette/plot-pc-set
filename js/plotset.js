@@ -1,9 +1,9 @@
-function drawset(id, a) {
-  var r = a.radius || defaults.radius;
-  var p = a.pad || defaults.pad;
-  var m = a.mod || defaults.mod;
-  var pcs = a.pcs || defaults.pcs;
-  var containersize = 2*(r+p)
+function drawset(id, pcset, opts) {
+  var m = pcset.mod || 12;
+  var pcs = pcset.pcs || [];
+  var r = opts.radius || 140;
+  var p = opts.pad || 20;
+  var containersize = 2*(r+p);
   var paper = new Raphael(document.getElementById(id), containersize, containersize);  
   var circle = paper.circle(r+p, r+p, r);
 
@@ -41,11 +41,5 @@ function drawset(id, a) {
     var dot = paper.circle(x, y, 4);
     dot.attr({fill:"black"});
     dot.glow({'width':6});
-  }
-  var defaults = {
-      'radius': 140,
-      'pad': 20,
-      'mod': 12,
-      'pcs': []
   }
 }
