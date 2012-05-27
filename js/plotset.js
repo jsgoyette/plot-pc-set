@@ -1,4 +1,4 @@
-function drawset(id, pcset, opts) {
+function plotset(id, pcset, opts) {
   var m = pcset.mod || 12;
   var pcs = pcset.pcs || [];
   var r = opts.radius || 140;

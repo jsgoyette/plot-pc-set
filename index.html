@@ -9,8 +9,6 @@
     body {
       padding-top: 80px;
     }
-    #canvas_container {  
-    }
   </style>
 </head>
 <body>
@@ -20,9 +18,9 @@
       <div class="span4">
         <div class="well">
           <label>Pitch classes</label>
-            <input type="text" id="pcs" class="span3" value="0 1 4 6"><br>
-            <span class="help-block">Enter either numbers or letter names.</span>
-            <button id="button" class="btn">Plot</button>
+          <input type="text" id="pcs" class="span3" value="0 1 4 6"><br>
+          <span class="help-block">Enter either numbers or letter names.</span>
+          <button id="button" class="btn">Plot</button>
         </div>
       </div>
       <div class="span2">&nbsp;</div>
@@ -40,7 +38,7 @@
   <script type="text/javascript">
     var canvasopts = {
       'radius': 140,
-      'pad': 20,
+      'pad': 20
     }
     var pcset = {
       'mod': 12,
@@ -50,7 +48,7 @@
       $('#canvas_container').remove('canvas');
       var pcstr = $("#pcs").val();
       pcset.pcs = pcstr2pcs(pcset.mod, pcstr);
-      drawset('canvas_container', pcset, canvasopts);
+      plotset('canvas_container', pcset, canvasopts);
     }
     $(document).ready(function () {
       engage();
