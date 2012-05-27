@@ -9,27 +9,49 @@
     body {
       padding-top: 80px;
     }
+    #canvas_container {  
+      width: 320px;  
+      border: 1px solid #eee;
+    }
   </style>
-  <script src="js/raphael-min.js" type="text/javascript"></script>
-  <script src="js/plotset.js" type="text/javascript"></script>
 </head>
 <body>
   <div class="container">
     <h2>Plot pitch-class set</h2>
     <div class="row">
       <div class="span4">
-        <form class="well">
+        <div class="well">
           <label>Pitch classes</label>
-            <input type="text" id="pcs" class="span3" placeholder="0 1 4 6"><br>
+            <input type="text" id="pcs" class="span3" value="0 1 4 6"><br>
+            <span class="help-block">Enter either numbers or letter names.</span>
             <button  id="button" class="btn">Plot</button>
-        </form>
+        </div>
       </div>
-      <div class="span8">
-        Canvas will go here.
+      <div class="span2">&nbsp;</div>
+      <div class="span6">
+        <div id="canvas_container"></div> 
       </div>
     </div>
   </div>
+  <script src="http://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript"></script>
+  <script src="js/raphael-min.js" type="text/javascript"></script>
+  <script src="js/plotset.js" type="text/javascript"></script>
+  <script src="js/num2pcs.js" type="text/javascript"></script>
   <script>
+  </script>
+  <script type="text/javascript">
+    function send_info() {  
+      var mod = 12;
+      var pcstr = $("#pcs").val();
+      var pcs = bin2pcs(pcs2bin(mod, pcstr2pcs(pcstr)));
+      drawset(mod, pcs, true);
+    }
+    $(document).ready(function () {
+      send_info();
+      $('#pcs').bind("change", function() {
+        send_info();
+      });
+    });
   </script>
 </body>
 </html> 

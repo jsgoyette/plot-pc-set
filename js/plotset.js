@@ -1,9 +1,7 @@
 var paper;
-var containersize = 240;
-var radius = 100;
+var radius = 140;
 var pad = 20;
-//var jsonhistory = new Array();
-//var nowviewing = 0;
+var containersize = 2 * (radius + pad);
 
 function drawset(mod, pcs, destroy) {  
 	if (paper && destroy) clearPaper(paper);
@@ -52,21 +50,9 @@ function drawset(mod, pcs, destroy) {
 		dot.glow({'width':6});
 
 	}
-//	line.animate(rotate(360));
-//	jsonhistory.push(paper.serialize.json()); // saves as json
-//	nowviewing = jsonhistory.length-1;
 }
 
 function clearPaper(paper){
     var paperDom = paper.canvas;
     paperDom.parentNode.removeChild(paperDom);
 }
-/*
-function drawJson_back(){
-	if (nowviewing) nowviewing--;
-	paper.clear();
-//	clearPaper(paper);
-//	paper = new Raphael(document.getElementById('canvas_container'), containersize, containersize);  
-	paper.serialize.load_json(jsonhistory[nowviewing]); // load it back
-}
-*/

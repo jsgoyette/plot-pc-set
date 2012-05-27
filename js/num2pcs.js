@@ -12,12 +12,10 @@ function pcstr2pcs(pstr) {
 	if (compressed) pstr = pstr.replace(/(.)/g,'$1 ')
 	pstr = pstr.replace(/^\s+|\s+$/g,'').replace(/\s+/g,' ');
 	if (pstr == "") return new Array();
-//alert(pstr);
 	return pstr.split(' ');
 }
 
-function bin2pcs(bin)
-{
+function bin2pcs(bin) {
 	var temp = parseInt(bin);
 	var arr = new Array();
 	if (!bin) return arr;
@@ -61,37 +59,6 @@ function pcs2bin(m, arr) {
 		val += Math.pow(2, outarr[x]);
 	}
 	return val;
-}
-
-function bin2pcs_write() {
-	var decs = document.getElementById("decimals").value;
-	var arr = bin2pcs(decs);
-	if (compressed) {
-	  for (x in arr) {
-	    if (arr[x]==10) arr[x]='t';
-	    if (arr[x]==11) arr[x]='e';
-	  }
-	}
-	var str = compressed? arr.join('') : arr.join(' ');
-	var txtBox=document.getElementById("pcs_str");
-	txtBox.value = str;
-//	if (txtBox!=null ) txtBox.focus();
-}
-
-function pcs2bin_write() {
-	var pcs = document.getElementById("pcs_str").value.trim();
-	var mod = document.getElementById("modulo").value;
-	if (mod == "") return 0;
-	arr = pcstr2pcs(pcs);
-	var val = pcs2bin(mod, arr);
-	if (!pcs.length) val = 0;
-	var txtBox=document.getElementById("decimals");
-	txtBox.value = val;
-	//if (txtBox!=null ) txtBox.focus();
-}
-
-function clear_screen() {
-	document.getElementById("ans").innerHTML = null;
 }
 
 /**
