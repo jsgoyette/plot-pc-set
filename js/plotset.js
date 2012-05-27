@@ -1,28 +1,28 @@
-var paper;
-var radius = 140;
-var pad = 20;
-var containersize = 2 * (radius + pad);
+function drawset(id, a) {
+  var r = a.radius || defaults.radius;
+  var p = a.pad || defaults.pad;
+  var m = a.mod || defaults.mod;
+  var pcs = a.pcs || defaults.pcs;
+  var containersize = 2*(r+p)
+  var paper = new Raphael(document.getElementById(id), containersize, containersize);  
+  var circle = paper.circle(r+p, r+p, r);
 
-function drawset(mod, pcs, destroy) {  
-  if (paper && destroy) clearPaper(paper);
-  paper = new Raphael(document.getElementById('canvas_container'), containersize, containersize);  
-  var circle = paper.circle(radius+pad, radius+pad, radius);
   circle.attr({'stroke-width':3});
-  for (var i = 0; i < mod; i++) {
-    var cos = Math.cos(i/mod*2*Math.PI);
-    var sin = Math.sin(i/mod*2*Math.PI);
-    var dot = paper.circle(radius*sin+radius+pad, -1*radius*cos+radius+pad, 4);
+  for (var i = 0; i < m; i++) {
+    var cos = Math.cos(i/m*2*Math.PI);
+    var sin = Math.sin(i/m*2*Math.PI);
+    var dot = paper.circle(r*sin+r+p, -1*r*cos+r+p, 4);
     dot.attr({fill:"white"});
   }
   for (var i = pcs.length-1; i >= 0; i--) {
-    var cos = Math.cos(pcs[i]/mod*2*Math.PI);
-    var sin = Math.sin(pcs[i]/mod*2*Math.PI);
-    var x = radius*sin+radius+pad;
-    var y = -1*radius*cos+radius+pad
+    var cos = Math.cos(pcs[i]/m*2*Math.PI);
+    var sin = Math.sin(pcs[i]/m*2*Math.PI);
+    var x = r*sin+r+p;
+    var y = -1*r*cos+r+p
     if (i) {
       for (var j = i-1; j >= 0; j--) {
-        var x2 = radius*Math.sin(pcs[j]/mod*2*Math.PI)+radius+pad;
-        var y2 = -1*radius*Math.cos(pcs[j]/mod*2*Math.PI)+radius+pad;
+        var x2 = r*Math.sin(pcs[j]/m*2*Math.PI)+r+p;
+        var y2 = -1*r*Math.cos(pcs[j]/m*2*Math.PI)+r+p;
         var ln = "M " + x + " " + y + " L " + x2 + " " + y2;
         var line = paper.path(ln);
         if (j==i-1 || (i==pcs.length-1 && j==0)) {
@@ -42,9 +42,10 @@ function drawset(mod, pcs, destroy) {
     dot.attr({fill:"black"});
     dot.glow({'width':6});
   }
-}
-
-function clearPaper(paper){
-    var paperDom = paper.canvas;
-    paperDom.parentNode.removeChild(paperDom);
+  var defaults = {
+      'radius': 140,
+      'pad': 20,
+      'mod': 12,
+      'pcs': []
+  }
 }

@@ -10,8 +10,6 @@
       padding-top: 80px;
     }
     #canvas_container {  
-      width: 320px;  
-      border: 1px solid #eee;
     }
   </style>
 </head>
@@ -24,7 +22,7 @@
           <label>Pitch classes</label>
             <input type="text" id="pcs" class="span3" value="0 1 4 6"><br>
             <span class="help-block">Enter either numbers or letter names.</span>
-            <button  id="button" class="btn">Plot</button>
+            <button id="button" class="btn">Plot</button>
         </div>
       </div>
       <div class="span2">&nbsp;</div>
@@ -40,11 +38,16 @@
   <script>
   </script>
   <script type="text/javascript">
-    function send_info() {  
-      var mod = 12;
+    var opts = {
+      'radius': 140,
+      'pad': 20,
+      'mod': 12
+    }
+    function send_info() { 
+      $('#canvas_container').remove('canvas');
       var pcstr = $("#pcs").val();
-      var pcs = pcstr2pcs(mod, pcstr);
-      drawset(mod, pcs, true);
+      opts.pcs = pcstr2pcs(opts.mod, pcstr);
+      drawset('canvas_container', opts);
     }
     $(document).ready(function () {
       send_info();

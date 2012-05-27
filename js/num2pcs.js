@@ -7,15 +7,14 @@ var compressed = false;
 function numOrdA(a, b){ return (a-b); }
 
 function pcstr2pcs(mod, pstr) {
-  var arr,
-      val = 0,
-      outarr = [];
+  var val = 0;
+  var outarr = [];
   pstr = pstr.replace(/,/g," ");
   pstr = pstr.replace(/_/g," ");
   if (compressed) pstr = pstr.replace(/(.)/g,'$1 ')
   pstr = pstr.replace(/^\s+|\s+$/g,'').replace(/\s+/g,' ');
   if (pstr == "") return [];
-  arr = pstr.split(' ')
+  var arr = pstr.split(' ');
   for (x in arr) {
     if (mod == 12 && !compressed && notenames[arr[x].toLowerCase()] != undefined) {
       arr[x] = notenames[arr[x].toLowerCase()];
