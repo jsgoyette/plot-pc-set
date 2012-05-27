@@ -30,8 +30,11 @@ function pcstr2pcs(mod, pstr) {
   for (x in outarr) {
     outarr[x] = Math.floor(outarr[x]);
     while (outarr[x]*1 >= mod) 
-    outarr[x] -= mod;
+      outarr[x] -= mod;
+    while (outarr[x]*1 < 0) 
+      outarr[x] += mod;
   }
+  outarr.sort(numOrdA);
   outarr = unique(outarr);
   return outarr;
 }
