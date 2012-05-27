@@ -6,23 +6,40 @@ var notenames = {'g##':9, 'a':9, 'bbb':9, 'a#':10, 'bb':10, 'a##':11,
 var compressed = false;
 function numOrdA(a, b){ return (a-b); }
 
-function pcstr2pcs(mod, pstr) {
-	var arr,
-	    val = 0,
-	    outarr = [];
+function pcstr2pcs(pstr) {
 	pstr = pstr.replace(/,/g," ");
 	pstr = pstr.replace(/_/g," ");
 	if (compressed) pstr = pstr.replace(/(.)/g,'$1 ')
 	pstr = pstr.replace(/^\s+|\s+$/g,'').replace(/\s+/g,' ');
 	if (pstr == "") return [];
-	arr = pstr.split(' ')
+	return pstr.split(' ');
+}
+
+function bin2pcs(bin) {
+	var arr = [];
+	if (!bin) return arr;
+	while (bin > 0) {
+		var i = 0;
+		while (Math.pow(2, i) <= bin) { i++; }
+		i -= 1;
+		bin -= Math.pow(2, i);
+		arr.push(i);
+	}
+	arr.sort(numOrdA);
+	return arr;
+}
+
+function pcs2bin(m, arr) {
+	var mod = parseInt(m);
+	var val = 0;
+	var outarr = [];
 	for (x in arr) {
 		if (mod == 12 && !compressed && notenames[arr[x].toLowerCase()] != undefined) {
 			arr[x] = notenames[arr[x].toLowerCase()];
 		}
 		if (mod == 12 && compressed) {
-			if (arr[x].toLowerCase() == 't') arr[x] = 10;
-			if (arr[x].toLowerCase() == 'e') arr[x] = 11;
+			if (arr[x] == 't' || arr[x] == 'T') arr[x] = 10;
+			if (arr[x] == 'e' || arr[x] == 'E') arr[x] = 11;
 		}
 	  if (!isNaN(arr[x])) { 
 	    outarr.push(arr[x]); 
@@ -34,7 +51,10 @@ function pcstr2pcs(mod, pstr) {
 		outarr[x] -= mod;
 	}
 	outarr = unique(outarr);
-	return outarr;
+	for (x in outarr) {
+		val += Math.pow(2, outarr[x]);
+	}
+	return val;
 }
 
 /**

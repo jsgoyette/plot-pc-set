@@ -43,7 +43,7 @@
     function send_info() {  
       var mod = 12;
       var pcstr = $("#pcs").val();
-      var pcs = bin2pcs(pcs2bin(mod, pcstr2pcs(pcstr)));
+      var pcs = pcstr2pcs(mod, pcstr);
       drawset(mod, pcs, true);
     }
     $(document).ready(function () {
@@ -51,6 +51,7 @@
       $('#pcs').bind("change", function() {
         send_info();
       });
+      $('#pcs').focus();
     });
   </script>
 </body>
