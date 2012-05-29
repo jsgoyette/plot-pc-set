@@ -1,10 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
+<!DOCTYPE html>
+<!-- saved from url=(0024)http://localhost:8080/?/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
   <title>Test</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="http://localhost:8080/css/bootstrap.css">
   <style>
     body {
       padding-top: 80px;
@@ -19,7 +19,7 @@
         <div class="well">
           <form id="pcsform">
             <label>Pitch classes</label>
-            <input type="text" id="pcs" class="span3" value="6 5 2 0"><br>
+            <input type="text" id="pcs" class="span3" value="0 2 5 6"><br>
             <span class="help-block">Enter either numbers or letter names.</span>
             <button type="submit" class="btn">Plot</button>
           </form>
@@ -45,22 +45,14 @@
       </div>
     </div>
   </div>
-  <script src="http://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript"></script>
-  <script type="text/javascript">
-    if (typeof jQuery == 'undefined') {
-     document.write(unescape("%3Cscript src='/js/jquery-1.7.2.min.js' type='text/javascript'%3E%3C/script%3E"));
-    }
-  </script>
-  <script src="js/raphael-min.js" type="text/javascript"></script>
-  <script src="js/setgraph.js" type="text/javascript"></script>
-  <script src="js/pcstr2pcs.js" type="text/javascript"></script>
+  <script src="./Test_files/jquery-1.7.2.min.js" type="text/javascript"></script>
+  <script src="./Test_files/raphael-min.js" type="text/javascript"></script>
+  <script src="./Test_files/setgraph.js" type="text/javascript"></script>
+  <script src="./Test_files/pcstr2pcs.js" type="text/javascript"></script>
   <script>
   </script>
   <script type="text/javascript">
-  
     //initial setup here
-    var sg = setGraph('canvas_container');
-    //sg.configure({'radius':180, 'padding':10});
     
     function engage() { 
       var pcstr = $("#pcs").val();
@@ -69,17 +61,19 @@
     }
 
     $(document).ready(function () {
+      var sg = setGraph('canvas_container');
+      sg.configure({'radius':160, 'padding':20});
       engage();
       setTimeout(function() { 
         sg.animTranspose(6, function () {
           $('#pcs').val(pcs.join(" "));
         });
-        setTimeout(function() { 
-          sg.animInvertDirect(0, function () {
-            $('#pcs').val(pcs.join(" "));
-          });
-        }, 1000);
       }, 1000);
+      setTimeout(function() { 
+        sg.animInvert(0, function () {
+          $('#pcs').val(pcs.join(" "));
+        });
+      }, 2000);
 
       $('#pcsform').submit(function() {
         engage();
@@ -92,7 +86,7 @@
         return false;
       });
       $('#invform').submit(function() {
-        sg.animInvertDirect($('#in').val(), function () {
+        sg.animInvert($('#in').val(), function () {
           $('#pcs').val(pcs.join(" "));
         });
         return false;
@@ -100,5 +94,6 @@
       $('#pcs').focus();
     });
   </script>
-</body>
-</html> 
+
+ 
+</body></html>

@@ -34,7 +34,7 @@ function pcstr2pcs(mod, pstr) {
     while (outarr[x]*1 < 0) 
       outarr[x] += mod;
   }
-//  outarr.sort(numOrdA);
+  outarr.sort(numOrdA);
   outarr = unique(outarr);
   return outarr;
 }

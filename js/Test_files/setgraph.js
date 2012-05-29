@@ -3,7 +3,7 @@ var setGraph = function (id) {
   self.m = 12;
   self.pcs = [];
   var paper;
-  var r = 150; //radius
+  var r = 140; //radius
   var p = 20; //pad
   var containersize = 2*(r+p);
   var pcobj = [];
@@ -27,7 +27,6 @@ var setGraph = function (id) {
   self.configure = function (opts) {
     r = opts.radius || r;
     p = opts.padding || p;
-    containersize = 2*(r+p);
   }
 
   self.drawset = function () {
@@ -83,7 +82,7 @@ var setGraph = function (id) {
 
   self.animTranspose = function (tn, callback) {
     var counter = 0;
-    var intervals = 20;
+    var intervals = 40;
     var tmp_pcs = self.pcs.slice(0);
     function step() {
       var adj = (tn*counter/intervals);
@@ -98,7 +97,7 @@ var setGraph = function (id) {
       if (counter < intervals) {
         setTimeout(function() { 
           step();
-        }, 15);
+        }, 10);
       }
       counter++;
     }
@@ -116,6 +115,30 @@ var setGraph = function (id) {
     }
   }
 
+  self.animInvertDirect = function (index, callback) {
+    var counter = 0;
+    var intervals = 40;
+    var tmp_pcs = self.pcs.slice(0);
+    function step() {
+      var adj = counter/intervals;
+      for (var i = pcobj.length-1; i >= 0; i--) {
+        self.pcs[i] = modularize(tmp_pcs[i]+(adj*(index-2*tmp_pcs[i])));
+        var pos = pcPos(self.pcs[i]);
+        pcobj[i].attr({cx: pos.x, cy: pos.y});  //set the circle position
+      }
+      if (callback && typeof callback == 'function') {
+        callback();
+      }
+     if (counter < intervals) {
+        setTimeout(function() { 
+          step();
+        }, 10);
+      }
+      counter++;
+    }
+    step();
+  }
+
   self.animInvert = function (index, callback) {
     var counter = 0;
     var intervals = 40;
@@ -123,9 +146,7 @@ var setGraph = function (id) {
     function step() {
       var adj = counter/intervals;
       for (var i = pcobj.length-1; i >= 0; i--) {
-        var stoe = modularize(index-2*tmp_pcs[i]); // ordered interval from starting point to ending point
-        if (stoe > m/2) stoe -= m; // go the shortest route
-        self.pcs[i] = modularize(tmp_pcs[i]+(adj*stoe));
+        self.pcs[i] = modularize(tmp_pcs[i]+(adj*(index-2*tmp_pcs[i])));
         var pos = pcPos(self.pcs[i]);
         pcobj[i].attr({cx: pos.x, cy: pos.y});  //set the circle position
       }
@@ -136,38 +157,6 @@ var setGraph = function (id) {
         setTimeout(function() { 
           step();
         }, 10);
-      }
-      counter++;
-    }
-    step();
-  }
-
-  self.animInvertDirect = function (index, callback) {
-    var counter = 0;
-    var intervals = 40;
-    var tmp_pcs = self.pcs.slice(0);
-    var spos = []; // arrays of start and end positions
-    var epos = [];
-    for (var i = pcs.length-1; i >= 0; i--) {
-      pcs[i] = modularize(index-pcs[i]);
-      spos.unshift(pcPos(tmp_pcs[i]));
-      epos.unshift(pcPos(self.pcs[i]));
-    }
-    function step() {
-      var adj = counter/intervals;
-      for (var i = pcobj.length-1; i >= 0; i--) {        
-        var nx = spos[i].x + adj*(epos[i].x - spos[i].x);
-        var ny = spos[i].y + adj*(epos[i].y - spos[i].y);
-        pcobj[i].attr({cx: nx, cy: ny});  //set the circle position
-      }
-      if (counter < intervals) {
-        setTimeout(function() { 
-          step();
-        }, 10);
-      } else {
-        if (callback && typeof callback == 'function') {
-          callback();
-        }      
       }
       counter++;
     }
