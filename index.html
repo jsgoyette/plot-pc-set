@@ -81,9 +81,9 @@
 
       // The action functions of setGraph (transpose, animTranpose, invert, animInvert, and
       // animInvertDirect) each take as the first argument the level of transposition or the
-      // index of inversions, and can also take a second argument that is a callback function.
-      // For animTranspose and animInvert, the callback calls at each step of the animation, 
-      // where as with the other functions the callback is only fired upon completion.
+      // index of inversion, and can also take a second argument that is a callback function.
+      // For animTranspose and animInvert the callback calls at each step of the animation, 
+      // but for the other functions the callback is only fired upon completion.
       setTimeout(function() { 
         sg.animTranspose(6, function () {
           $('#pcs').val(pcs.join(" "));

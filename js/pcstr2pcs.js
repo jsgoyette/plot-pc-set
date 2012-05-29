@@ -1,3 +1,6 @@
+// This script turns a string into an array of pitch classes. If necessary, note names are 
+// converted into numeric pitch classes.
+
 var notenames = {'g##':9, 'a':9, 'bbb':9, 'a#':10, 'bb':10, 'a##':11, 
     'b':11, 'cb':11, 'b#':0, 'c':0, 'dbb': 0, 'c#':1, 'db':1, 'c##':2, 
     'd':2, 'd#':3, 'eb':3, 'e':4, 'fb':4, 'e#':5, 'f':5, 'gbb':5,
