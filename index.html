@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>Test</title>
+  <title>plot-pc-set.js</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <link rel="stylesheet" href="css/bootstrap.css">
   <style>
     body {
-      padding-top: 80px;
+      padding-top: 60px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Plot pitch-class set</h2>
+    <h2>plot-pc-set.js</h2>
     <div class="row">
       <div class="span4">
         <div class="well">
@@ -52,25 +52,37 @@
     }
   </script>
   <script src="js/raphael-min.js" type="text/javascript"></script>
-  <script src="js/setgraph.js" type="text/javascript"></script>
+  <script src="js/plot-pc-set.js" type="text/javascript"></script>
   <script src="js/pcstr2pcs.js" type="text/javascript"></script>
   <script>
   </script>
   <script type="text/javascript">
   
-    //initial setup here
+    // Setup here
+    // Initialize setGraph using the id of the div in which the canvas will appear
     var sg = setGraph('canvas_container');
+
+    // Optional adjustments
     //sg.configure({'radius':120, 'padding':10});
     //sg.m = 13; // change modulus
     
     function engage() { 
       var pcstr = $("#pcs").val();
+      // set pitch classes for setGraph
       sg.pcs = pcstr2pcs(sg.m, pcstr);
-      sg.drawset();
+      // plot the pcs
+      sg.plotpcs();
     }
 
     $(document).ready(function () {
+
       engage();
+
+      // The action functions of setGraph (transpose, animTranpose, invert, animInvert, and
+      // animInvertDirect) each take as the first argument the level of transposition or the
+      // index of inversions, and can also take a second argument that is a callback function.
+      // For animTranspose and animInvert, the callback calls at each step of the animation, 
+      // where as with the other functions the callback is only fired upon completion.
       setTimeout(function() { 
         sg.animTranspose(6, function () {
           $('#pcs').val(pcs.join(" "));
@@ -87,6 +99,7 @@
         }, 1000);
       }, 1000);
 
+      // set up listeners
       $('#pcsform').submit(function() {
         engage();
         return false;
