@@ -19,7 +19,7 @@
         <div class="well">
           <form id="pcsform">
             <label>Pitch classes</label>
-            <input type="text" id="pcs" class="span3" value="6 5 2 0"><br>
+            <input type="text" id="pcs" class="span3" value="8 9 0 2"><br>
             <span class="help-block">Enter either numbers or letter names.</span>
             <button type="submit" class="btn">Plot</button>
           </form>
@@ -60,7 +60,8 @@
   
     //initial setup here
     var sg = setGraph('canvas_container');
-    //sg.configure({'radius':180, 'padding':10});
+    //sg.configure({'radius':120, 'padding':10});
+    //sg.m = 13; // change modulus
     
     function engage() { 
       var pcstr = $("#pcs").val();
@@ -75,9 +76,14 @@
           $('#pcs').val(pcs.join(" "));
         });
         setTimeout(function() { 
-          sg.animInvertDirect(0, function () {
+          sg.animInvert(0, function () {
             $('#pcs').val(pcs.join(" "));
           });
+          setTimeout(function() { 
+            sg.animInvertDirect(10, function () {
+              $('#pcs').val(pcs.join(" "));
+            });
+          }, 1000);
         }, 1000);
       }, 1000);
 
