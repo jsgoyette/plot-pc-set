@@ -9,7 +9,7 @@ var pcJS = fs.readFileSync(__dirname + '/plot-pc-set.js').toString(),
 
 console.log('building and minifying...')
 buildFile(pcJS, 'plot-pc-set.min.js')
-//buildFile(p2pJS + '\n\n' + pcJS, 'setgraph.min.js')
+buildFile(p2pJS, 'pcstr2pcs.min.js')
 console.log('done')
 
 function buildFile(js, name) {
