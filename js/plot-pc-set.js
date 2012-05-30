@@ -3,6 +3,7 @@ var setGraph = function (id) {
   var self = this;
   self.m = 12;
   self.pcs = [];
+  self.fixedpcs = [];
   var paper;
   var r = 180; // radius
   var p = 30; // pad
@@ -10,8 +11,8 @@ var setGraph = function (id) {
   var pcobj = [];
   
   function pcPos(pc) {
-    var cos = Math.cos(pc/m*2*Math.PI);
-    var sin = Math.sin(pc/m*2*Math.PI);
+    var cos = Math.cos(pc/self.m*2*Math.PI);
+    var sin = Math.sin(pc/self.m*2*Math.PI);
     return {
       'x': r*sin+r+p,
       'y': -1*r*cos+r+p
@@ -19,8 +20,8 @@ var setGraph = function (id) {
   }
 
   function modularize(pc) {
-    while (pc >= m) pc -= m;
-    while (pc < 0) pc += m;
+    while (pc >= self.m) pc -= self.m;
+    while (pc < 0) pc += self.m;
     return roundNumber(pc, 2);
   }
 
@@ -45,7 +46,7 @@ var setGraph = function (id) {
     paper = new Raphael(document.getElementById(id), csize, csize);  
     var circle = paper.circle(r+p, r+p, r);
     circle.attr({'stroke-width':4});
-    for (var i = 0; i < m; i++) {
+    for (var i = 0; i < self.m; i++) {
       var pos = pcPos(i);
       var dot = paper.circle(pos.x, pos.y, 5);
       dot.attr({fill:"white"});
@@ -56,6 +57,11 @@ var setGraph = function (id) {
       dot.attr({fill:"black"});
 //      dot.glow({'width':6});
       pcobj.unshift(dot); //adds to beginning of array
+    }
+    for (var i = self.fixedpcs.length-1; i >= 0; i--) {
+      var pos = pcPos(self.fixedpcs[i]);
+      var dot = paper.circle(pos.x, pos.y, 7);
+      dot.attr({fill:"black"});
     }
   }
 
