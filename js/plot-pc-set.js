@@ -1,6 +1,5 @@
 var setGraph = function (id) {
-
-  var self = this;
+  var self = {};
   self.m = 12;
   self.pcs = [];
   self.fix = 0; // number of fixed pcs
