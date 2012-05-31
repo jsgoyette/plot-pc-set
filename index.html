@@ -64,12 +64,14 @@
     var sg = setGraph('canvas_container');
 
     // Optional adjustments
-    //sg.configure({'radius':120, 'padding':10});
+    //sg.configure({'radius':120, 'padding':10, 'ticksize':4, 'dotsize':5});
     //sg.m = 13; // change modulus
+    //sg.fix = 2; // the number of elements in pcs array that remain fixed (default 0)
     
     function engage() { 
+      // get the pitch classes from the input
       var pcstr = $("#pcs").val();
-      // set pitch classes for setGraph
+      // convert string to array, and set pcs for setGraph
       sg.pcs = pcstr2pcs(sg.m, pcstr);
       // plot the pcs
       sg.plotpcs();
@@ -86,15 +88,15 @@
       // but for the other functions the callback is only fired upon completion.
       setTimeout(function() { 
         sg.animTranspose(6, function () {
-          $('#pcs').val(pcs.join(" "));
+          $('#pcs').val(sg.pcs.join(" "));
         });
         setTimeout(function() { 
           sg.animInvert(0, function () {
-            $('#pcs').val(pcs.join(" "));
+            $('#pcs').val(sg.pcs.join(" "));
           });
           setTimeout(function() { 
             sg.animInvertDirect(10, function () {
-              $('#pcs').val(pcs.join(" "));
+              $('#pcs').val(sg.pcs.join(" "));
             });
           }, 1000);
         }, 1000);
@@ -107,13 +109,13 @@
       });
       $('#tnform').submit(function() {
         sg.animTranspose($('#tn').val(), function () {
-          $('#pcs').val(pcs.join(" "));
+          $('#pcs').val(sg.pcs.join(" "));
         });
         return false;
       });
       $('#invform').submit(function() {
         sg.animInvertDirect($('#in').val(), function () {
-          $('#pcs').val(pcs.join(" "));
+          $('#pcs').val(sg.pcs.join(" "));
         });
         return false;
       });
