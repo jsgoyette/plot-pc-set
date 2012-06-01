@@ -4,12 +4,10 @@ var fs = require('fs'),
   uglify = require('uglify-js')
 
 var pcJS = fs.readFileSync(__dirname + '/plot-pc-set.js').toString(),
-  p2pJS = fs.readFileSync(__dirname + '/pcstr2pcs.js').toString(),
   copy = '/* Copyright (c) 2012 Jeremiah Goyette */'
 
 console.log('building and minifying...')
 buildFile(pcJS, 'plot-pc-set.min.js')
-buildFile(p2pJS, 'pcstr2pcs.min.js')
 console.log('done')
 
 function buildFile(js, name) {

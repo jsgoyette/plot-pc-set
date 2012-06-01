@@ -54,11 +54,34 @@
   </script>
   <script src="js/raphael-min.js" type="text/javascript"></script>
   <script src="js/plot-pc-set.js" type="text/javascript"></script>
-  <script src="js/pcstr2pcs.js" type="text/javascript"></script>
   <script>
   </script>
   <script type="text/javascript">
-  
+    
+    // first, a little function to turn pc string into array
+    function pcstr2pcs(mod, pstr) {
+      var val = 0;
+      var outarr = [];
+      pstr = pstr.replace(/,/g," ");
+      pstr = pstr.replace(/_/g," ");
+      pstr = pstr.replace(/^\s+|\s+$/g,'').replace(/\s+/g,' ');
+      if (pstr == "") return [];
+      var arr = pstr.split(' ');
+      for (x in arr) {
+        if (!isNaN(arr[x])) { 
+          outarr.push(arr[x]); 
+        }
+      }
+      for (x in outarr) {
+        outarr[x] = Math.floor(outarr[x]);
+        while (outarr[x]*1 >= mod) 
+          outarr[x] -= mod;
+        while (outarr[x]*1 < 0) 
+          outarr[x] += mod;
+      }
+      return outarr;
+    }
+    
     // Setup here
     // Initialize setGraph using the id of the div in which the canvas will appear
     var sg = setGraph('canvas_container');
