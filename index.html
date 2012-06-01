@@ -68,14 +68,13 @@
       var arr = pstr.split(' ');
       for (x in arr) {
         if (!isNaN(arr[x])) { 
-          outarr.push(arr[x]); 
+          outarr.push(Math.pow(arr[x], 1)); 
         }
       }
       for (x in outarr) {
-        outarr[x] = Math.floor(outarr[x]);
-        while (outarr[x]*1 >= mod) 
+        while (outarr[x] >= mod) 
           outarr[x] -= mod;
-        while (outarr[x]*1 < 0) 
+        while (outarr[x] < 0) 
           outarr[x] += mod;
       }
       return outarr;
