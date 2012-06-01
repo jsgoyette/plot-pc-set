@@ -60,12 +60,12 @@
     
     // first, a little function to turn pc string into array
     function pcstr2pcs(mod, pstr) {
-      var outarr = [];
+      var arr, outarr = [];
       pstr = pstr.replace(/,/g," ");
       pstr = pstr.replace(/_/g," ");
       pstr = pstr.replace(/^\s+|\s+$/g,'').replace(/\s+/g,' ');
       if (pstr == "") return [];
-      var arr = pstr.split(' ');
+      arr = pstr.split(' ');
       for (x in arr) {
         if (!isNaN(arr[x])) { 
           outarr.push(Math.pow(arr[x], 1)); 
@@ -89,8 +89,8 @@
     //sg.configure({'radius':120, 'padding':10, 'ticksize':4, 'dotsize':5});
     sg.configure({
       'dotclick': function () {
-        var r = this.attr('r')
-        this.animate({'r': r*2}, 200, function () {
+        var r = this.attr('r');
+        this.animate({'r': r * 2}, 200, function () {
           this.animate({'r': r}, 400);
         });
       }
