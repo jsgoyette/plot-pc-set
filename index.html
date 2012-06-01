@@ -100,7 +100,7 @@
     function engage() { 
       // get the pitch classes from the input
       var pcstr = $("#pcs").val();
-      // convert string to array, and set pcs for setGraph
+      // convert string to array
       var pcs = pcstr2pcs(12, pcstr);
       // plot the pcs
       sg.plotpcs(pcs);
