@@ -20,7 +20,7 @@
         <div class="well">
           <form id="pcsform">
             <label>Pitch classes</label>
-            <input type="text" id="pcs" class="span3" value="8 9 0 2"><br>
+            <input type="text" id="pcs" class="span3" value="8 8 9 0 2"><br>
             <span class="help-block">Enter either numbers or letter names.</span>
             <button type="submit" class="btn">Plot</button>
           </form>
@@ -64,17 +64,24 @@
     var sg = setGraph('canvas_container');
 
     // Optional adjustments
+    //sg.m = 13; // change mod
     //sg.configure({'radius':120, 'padding':10, 'ticksize':4, 'dotsize':5});
-    //sg.m = 13; // change modulus
-    //sg.fix = 2; // the number of elements in pcs array that remain fixed (default 0)
+    sg.configure({
+      'dotclick': function () {
+        var r = this.attr('r')
+        this.animate({'r': r*2}, 200, function () {
+          this.animate({'r': r}, 400);
+        });
+      }
+    })
     
     function engage() { 
       // get the pitch classes from the input
       var pcstr = $("#pcs").val();
       // convert string to array, and set pcs for setGraph
-      sg.pcs = pcstr2pcs(sg.m, pcstr);
+      var pcs = pcstr2pcs(12, pcstr);
       // plot the pcs
-      sg.plotpcs();
+      sg.plotpcs(pcs);
     }
 
     $(document).ready(function () {
@@ -88,15 +95,15 @@
       // but for the other functions the callback is only fired upon completion.
       setTimeout(function() { 
         sg.animTranspose(6, function () {
-          $('#pcs').val(sg.pcs.join(" "));
+          $('#pcs').val(sg.getpcs().join(" "));
         });
         setTimeout(function() { 
           sg.animInvert(0, function () {
-            $('#pcs').val(sg.pcs.join(" "));
+            $('#pcs').val(sg.getpcs().join(" "));
           });
           setTimeout(function() { 
             sg.animInvertDirect(10, function () {
-              $('#pcs').val(sg.pcs.join(" "));
+              $('#pcs').val(sg.getpcs().join(" "));
             });
           }, 1000);
         }, 1000);
@@ -109,13 +116,13 @@
       });
       $('#tnform').submit(function() {
         sg.animTranspose($('#tn').val(), function () {
-          $('#pcs').val(sg.pcs.join(" "));
+          $('#pcs').val(sg.getpcs().join(" "));
         });
         return false;
       });
       $('#invform').submit(function() {
         sg.animInvertDirect($('#in').val(), function () {
-          $('#pcs').val(sg.pcs.join(" "));
+          $('#pcs').val(sg.getpcs().join(" "));
         });
         return false;
       });

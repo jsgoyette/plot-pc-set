@@ -38,7 +38,7 @@ function pcstr2pcs(mod, pstr) {
       outarr[x] += mod;
   }
 //  outarr.sort(numOrdA);
-  outarr = unique(outarr);
+//  outarr = unique(outarr);
   return outarr;
 }
 
