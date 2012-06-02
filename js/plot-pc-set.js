@@ -115,10 +115,10 @@ var setGraph = function (id) {
     for (var i = pcarr.length-1; i >= 0; i--) {
       pcs.unshift(pcarr[i].pc)
     }
-    return pcs; 
+    return pcs;
   }
 
-  self.transpose = function (tn, callback) { 
+  self.transpose = function (tn, callback) {
     for (var i = pcarr.length-1; i >= 0; i--) {
       if (!pcarr[i].fixed)
         pcarr[i].pc = modularize(pcarr[i].pc + tn);
@@ -233,7 +233,7 @@ var setGraph = function (id) {
     function step() {
       var adj = counter/intervals;
       for (var i = pcarr.length-1; i >= 0; i--) {
-        if (!pcarr[i].fixed) {     
+        if (!pcarr[i].fixed) {
           var nx = spos[i].x + adj * (epos[i].x - spos[i].x),
              ny = spos[i].y + adj * (epos[i].y - spos[i].y);
           pcarr[i].dot.attr({cx: nx, cy: ny});  //set the dot position
