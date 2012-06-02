@@ -228,10 +228,11 @@
       function step() {
         var adj = counter/intervals;
         for (var i = pcarr.length-1; i >= 0; i--) {
+          // set dot position if pc is not fixed
           if (!pcarr[i].fixed) {
             var nx = spos[i].x + adj * (epos[i].x - spos[i].x),
                ny = spos[i].y + adj * (epos[i].y - spos[i].y);
-            pcarr[i].dot.attr({cx: nx, cy: ny});  //set the dot position
+            pcarr[i].dot.attr({cx: nx, cy: ny});
           }
         }
         if (counter < intervals) {
@@ -243,7 +244,7 @@
           for (var i = pcarr.length-1; i >= 0; i--) {
             if (!pcarr[i].fixed) pcarr[i].pc = modularize(index-pcarr[i].pc);
           }
-          //separate for loop for dot sizes since pcs need to be determined
+          //separate for loop for dot sizes since pcs need to be inverted first
           for (var i = pcarr.length-1; i >= 0; i--) {
             pcarr[i].dot.attr({r: getdotsize(pcarr[i].pc)});
           }
