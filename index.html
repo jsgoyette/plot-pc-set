@@ -21,20 +21,19 @@
           <form id="pcsform">
             <label>Pitch classes</label>
             <input type="text" id="pcs" class="span3" value="8 8 9 0 2"><br>
-            <span class="help-block">Enter either numbers or letter names.</span>
             <button type="submit" class="btn">Plot</button>
           </form>
         </div>
         <div class="well">
           <form id="tnform">
-            <label>Transpose - T<sub>n</sub></label>
+            <label>Transpose</label>
             <input type="text" id="tn" class="span1" value="3"><br>
             <button id="transbutton" class="btn">Transpose</button>
           </form>
         </div>
         <div class="well">
           <form id="invform">
-            <label>Invert at index - I<sub>n</sub></label>
+            <label>Invert at index</label>
             <input type="text" id="in" class="span1" value="10"><br>
             <button id="invbutton" class="btn">Invert</button>
           </form>
@@ -67,14 +66,14 @@
       if (pstr == "") return [];
       arr = pstr.split(' ');
       for (x in arr) {
-        if (!isNaN(arr[x])) { 
+        if (!isNaN(arr[x])) {
           outarr.push(Math.pow(arr[x], 1)); 
         }
       }
       for (x in outarr) {
-        while (outarr[x] >= mod) 
+        while (outarr[x] >= mod)
           outarr[x] -= mod;
-        while (outarr[x] < 0) 
+        while (outarr[x] < 0)
           outarr[x] += mod;
       }
       return outarr;
@@ -151,4 +150,4 @@
     });
   </script>
 </body>
-</html> 
+</html>

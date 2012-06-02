@@ -43,7 +43,7 @@ var setGraph = function (id) {
   //determine dot size for multisets
   function getdotsize(pc) {
     var i, c = -1;
-    for (i = pcarr.length - 1; i >= 0; i--) {
+    for (i = pcarr.length-1; i >= 0; i--) {
       if (pcarr[i].pc == pc) {
         c++;
       }
@@ -53,12 +53,14 @@ var setGraph = function (id) {
   }
 
   function positiondots() {
-    for (var i = pcarr.length - 1; i >= 0; i--) {
+    for (var i = pcarr.length-1; i >= 0; i--) {
       if (!pcarr[i].fixed) {
+        //set the circle position
         var pos = pcPos(pcarr[i].pc);
-        pcarr[i].dot.attr({cx: pos.x, cy: pos.y});  //set the circle position
+        pcarr[i].dot.attr({cx: pos.x, cy: pos.y});
       }
-      pcarr[i].dot.attr({r: getdotsize(pcarr[i].pc)}); // adjust dot size
+      // adjust dot size
+      pcarr[i].dot.attr({r: getdotsize(pcarr[i].pc)});
     }
   }
 
@@ -98,11 +100,11 @@ var setGraph = function (id) {
     }
     // make array of pcobj
     if (pcs) {
-      for (var i = pcs.length - 1; i >= 0; i--) {
+      for (var i = pcs.length-1; i >= 0; i--) {
         fix = fix || 0;
         var f = (i >= fix) ? false : true;
         var obj = new pcobj(pcs[i], f);
-        pcarr.unshift(obj); //adds to beginning of array    
+        pcarr.unshift(obj);
       }
     }
     positiondots();
@@ -110,16 +112,16 @@ var setGraph = function (id) {
 
   self.getpcs = function () {
     var pcs = [];
-    for (var i = pcarr.length - 1; i >= 0; i--) {
+    for (var i = pcarr.length-1; i >= 0; i--) {
       pcs.unshift(pcarr[i].pc)
     }
     return pcs; 
   }
 
   self.transpose = function (tn, callback) { 
-    for (var i = pcarr.length - 1; i >= 0; i--) {
+    for (var i = pcarr.length-1; i >= 0; i--) {
       if (!pcarr[i].fixed)
-        pcarr[i].pc = modularize(pcarr[i].pc+tn);
+        pcarr[i].pc = modularize(pcarr[i].pc + tn);
     }
     positiondots();
     if (callback && typeof callback === 'function') {
@@ -130,12 +132,12 @@ var setGraph = function (id) {
   self.animTranspose = function (tn, callback) {
     if (active) return;
     active = true;
-    var counter = 0;
-    var intervals = 40;
-    var tmp_pcs = self.getpcs();
+    var counter = 0,
+      intervals = 40,
+      tmp_pcs = self.getpcs();
     function step() {
       var adj = (tn * counter / intervals);
-      for (var i = pcarr.length - 1; i >= 0; i--) {
+      for (var i = pcarr.length-1; i >= 0; i--) {
         if (!pcarr[i].fixed)
           pcarr[i].pc = modularize(tmp_pcs[i] + adj);
       }
@@ -144,7 +146,7 @@ var setGraph = function (id) {
         callback();
       }
       if (counter < intervals) {
-        setTimeout(function() { 
+        setTimeout(function() {
           step();
         }, 10);
       } else {
@@ -156,7 +158,7 @@ var setGraph = function (id) {
   }
 
   self.invert = function (index, callback) {
-    for (var i = pcarr.length - 1; i >= 0; i--) {
+    for (var i = pcarr.length-1; i >= 0; i--) {
       if (!pcarr[i].fixed)
         pcarr[i].pc = modularize(index - pcarr[i].pc);
     }
@@ -169,18 +171,21 @@ var setGraph = function (id) {
   self.animInvert = function (index, callback) {
     if (active) return;
     active = true;
-    var counter = 0;
-    var intervals = 40;
-    var tmp_pcs = self.getpcs();
+    var counter = 0,
+      intervals = 40,
+      tmp_pcs = self.getpcs();
     function step() {
       var adj = counter/intervals;
-      for (var i = pcarr.length - 1; i >= 0; i--) {
+      for (var i = pcarr.length-1; i >= 0; i--) {
         if (!pcarr[i].fixed) {
-          var stoe = modularize(index - 2 * tmp_pcs[i]); // ordered interval from start to end
-          if (stoe > self.m / 2) stoe -= self.m; // go the shortest route
+          // ordered interval from start to end
+          var stoe = modularize(index - 2 * tmp_pcs[i]);
+          // go the shortest route
+          if (stoe > self.m / 2) stoe -= self.m;
           pcarr[i].pc = modularize(tmp_pcs[i] + (adj * stoe));
           var pos = pcPos(pcarr[i].pc);
-          pcarr[i].dot.attr({cx: pos.x, cy: pos.y});  //set the circle position
+          //set the circle position
+          pcarr[i].dot.attr({cx: pos.x, cy: pos.y});
         }
         pcarr[i].dot.attr({r: getdotsize(pcarr[i].pc)});
       }
@@ -188,7 +193,7 @@ var setGraph = function (id) {
         callback();
       }
       if (counter < intervals) {
-        setTimeout(function() { 
+        setTimeout(function() {
           step();
         }, 10);
       } else {
@@ -202,11 +207,12 @@ var setGraph = function (id) {
   self.animInvertDirect = function (index, callback) {
     if (active) return;
     active = true;
-    var counter = 0;
-    var intervals = 40;
-    var spos = []; // arrays of start and end positions
-    var epos = [];
-    for (var i = pcarr.length - 1; i >= 0; i--) {
+    var counter = 0,
+      intervals = 40,
+      spos = [],
+      epos = [];
+    for (var i = pcarr.length-1; i >= 0; i--) {
+      var c = 0;
       if (!pcarr[i].fixed) {
         spos.unshift(pcPos(pcarr[i].pc));
         epos.unshift(pcPos(modularize(index-pcarr[i].pc)));
@@ -216,9 +222,8 @@ var setGraph = function (id) {
         epos.unshift(0);
       }
       // now a different calculation for dot size
-      var c = 0;
-      for (var j = pcarr.length - 1; j >= 0; j--) {
-        if (i != j && pcarr[i].pc == pcarr[j].pc 
+      for (var j = pcarr.length-1; j >= 0; j--) {
+        if (i != j && pcarr[i].pc == pcarr[j].pc
           && pcarr[i].fixed == pcarr[j].fixed) {
             c++;
         }
@@ -227,30 +232,30 @@ var setGraph = function (id) {
     }
     function step() {
       var adj = counter/intervals;
-      for (var i = pcarr.length - 1; i >= 0; i--) {
+      for (var i = pcarr.length-1; i >= 0; i--) {
         if (!pcarr[i].fixed) {     
-          var nx = spos[i].x + adj * (epos[i].x - spos[i].x);
-          var ny = spos[i].y + adj * (epos[i].y - spos[i].y);
+          var nx = spos[i].x + adj * (epos[i].x - spos[i].x),
+             ny = spos[i].y + adj * (epos[i].y - spos[i].y);
           pcarr[i].dot.attr({cx: nx, cy: ny});  //set the dot position
         }
       }
       if (counter < intervals) {
-        setTimeout(function() { 
+        setTimeout(function() {
           step();
         }, 10);
       } else {
         // invert pcs
-        for (var i = pcarr.length - 1; i >= 0; i--) {
+        for (var i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed) pcarr[i].pc = modularize(index-pcarr[i].pc);
         }
         //separate for loop for dot sizes since pcs need to be determined
-        for (var i = pcarr.length - 1; i >= 0; i--) {
+        for (var i = pcarr.length-1; i >= 0; i--) {
           pcarr[i].dot.attr({r: getdotsize(pcarr[i].pc)});
         }
         if (callback && typeof callback === 'function') {
           callback();
         }
-        active = false;  
+        active = false;
       }
       counter++;
     }
