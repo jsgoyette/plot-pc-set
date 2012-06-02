@@ -18,6 +18,7 @@
       csize = 2 * (r + p), // container size
       tsize = 5, // tick size
       dsize = 8, // dot size
+      animints = 50, // num of intervals in animation (10ms each)
       dotclick = function () {
         return false;
       };
@@ -85,6 +86,8 @@
         exports.clear(paper);
         pcarr = [];
       }
+      pcs = pcs || [];
+      fix = fix || 0;
       paper = new Raphael(document.getElementById(id), csize, csize);
       // make big circle
       var circle = paper.circle(r + p, r + p, r);
@@ -96,9 +99,7 @@
         dot.attr({fill: "white"});
       }
       // make array of pcobj
-      pcs = pcs || [];
       for (var i = pcs.length-1; i >= 0; i--) {
-        fix = fix || 0;
         var f = (i >= fix) ? false : true;
         var obj = new pcobj(pcs[i], f);
         pcarr.unshift(obj);
@@ -129,10 +130,9 @@
       if (active) return;
       active = true;
       var counter = 0,
-        intervals = 40,
         tmp_pcs = exports.getpcs();
       function step() {
-        var adj = (tn * counter / intervals);
+        var adj = (tn * counter / animints);
         for (var i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed)
             pcarr[i].pc = modularize(tmp_pcs[i] + adj);
@@ -141,7 +141,7 @@
         if (callback && typeof callback === 'function') {
           callback();
         }
-        if (counter < intervals) {
+        if (counter < animints) {
           setTimeout(function() {
             step();
           }, 10);
@@ -168,10 +168,9 @@
       if (active) return;
       active = true;
       var counter = 0,
-        intervals = 40,
         tmp_pcs = exports.getpcs();
       function step() {
-        var adj = counter/intervals;
+        var adj = counter/animints;
         for (var i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed) {
             // ordered interval from start to end
@@ -188,7 +187,7 @@
         if (callback && typeof callback === 'function') {
           callback();
         }
-        if (counter < intervals) {
+        if (counter < animints) {
           setTimeout(function() {
             step();
           }, 10);
@@ -204,7 +203,6 @@
       if (active) return;
       active = true;
       var counter = 0,
-        intervals = 40,
         spos = [],
         epos = [];
       for (var i = pcarr.length-1; i >= 0; i--) {
@@ -226,7 +224,7 @@
         pcarr[i].dot.attr({r: Math.sqrt(c) * dsize});
       }
       function step() {
-        var adj = counter/intervals;
+        var adj = counter/animints;
         for (var i = pcarr.length-1; i >= 0; i--) {
           // set dot position if pc is not fixed
           if (!pcarr[i].fixed) {
@@ -235,7 +233,7 @@
             pcarr[i].dot.attr({cx: nx, cy: ny});
           }
         }
-        if (counter < intervals) {
+        if (counter < animints) {
           setTimeout(function() {
             step();
           }, 10);
