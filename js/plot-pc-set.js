@@ -9,7 +9,7 @@
   var setGraph = window.setGraph = function (id) {
 
     var exports = {},
-      paper, // Raphael object
+      paper,  // Raphael object
       pcarr = [], // array of pcobj
       active = false,
       r = 180, // radius of big circle
