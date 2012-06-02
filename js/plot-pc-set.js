@@ -6,34 +6,32 @@
     return result;
   }
 
-  var setGraph = window.setGraph = function (id) {
+  var sg = window.setGraph = function (id) {
 
     var exports = {},
       paper,  // Raphael object
-      pcarr = [], // array of pcobj
       active = false,
+      pcarr = [], // array of pcobj
+      m = 12, // modulus
       r = 180, // radius of big circle
       p = 30, // padding between circle and edge of canvas
       csize = 2 * (r + p), // container size
       tsize = 5, // tick size
       dsize = 8, // dot size
-      dsize_inc = 0.5, // ratio of increase in dot size for each added dot (1 is double)
       dotclick = function () {
         return false;
       };
 
-    exports.m = 12;
-
     // convert pc to range between 0 and mod
     function modularize(pc) {
-      while (pc >= exports.m) { pc -= exports.m; }
-      while (pc < 0) { pc += exports.m; }
+      while (pc >= m) { pc -= m; }
+      while (pc < 0) { pc += m; }
       return roundNumber(pc, 2);
     }
 
     function pcPos(pc) {
-      var cos = Math.cos(pc / exports.m * 2 * Math.PI);
-      var sin = Math.sin(pc / exports.m * 2 * Math.PI);
+      var cos = Math.cos(pc / m * 2 * Math.PI);
+      var sin = Math.sin(pc / m * 2 * Math.PI);
       return {
         'x': r * sin + r + p,
         'y': -1 * r * cos + r + p
@@ -42,14 +40,13 @@
 
     //determine dot size for multisets
     function getdotsize(pc) {
-      var i, c = -1;
+      var i, c = 0;
       for (i = pcarr.length-1; i >= 0; i--) {
         if (pcarr[i].pc == pc) {
           c++;
         }
       }
-      if (c < 1) { c = 0; }
-      return (1 + c * dsize_inc) * dsize;
+      return Math.sqrt(c) * dsize;
     }
 
     function positiondots() {
@@ -74,12 +71,12 @@
     }
 
     exports.configure = function (opts) {
+      m = opts.mod || m;
       r = opts.radius || r;
       p = opts.padding || p;
       csize = 2 * (r + p);
       tsize = opts.ticksize || tsize;
       dsize = opts.dotsize || dsize;
-      dsize_inc = opts.dotsizeinc || dsize_inc;
       dotclick = opts.dotclick && typeof opts.dotclick === 'function' ? opts.dotclick : dotclick;
     }
 
@@ -93,19 +90,18 @@
       var circle = paper.circle(r + p, r + p, r);
       circle.attr({'stroke-width': 4});
       // make ticks
-      for (var i = 0; i < exports.m; i++) {
+      for (var i = 0; i < m; i++) {
         var pos = pcPos(i);
         var dot = paper.circle(pos.x, pos.y, tsize);
         dot.attr({fill: "white"});
       }
       // make array of pcobj
-      if (pcs) {
-        for (var i = pcs.length-1; i >= 0; i--) {
-          fix = fix || 0;
-          var f = (i >= fix) ? false : true;
-          var obj = new pcobj(pcs[i], f);
-          pcarr.unshift(obj);
-        }
+      pcs = pcs || [];
+      for (var i = pcs.length-1; i >= 0; i--) {
+        fix = fix || 0;
+        var f = (i >= fix) ? false : true;
+        var obj = new pcobj(pcs[i], f);
+        pcarr.unshift(obj);
       }
       positiondots();
     }
@@ -181,7 +177,7 @@
             // ordered interval from start to end
             var stoe = modularize(index - 2 * tmp_pcs[i]);
             // go the shortest route
-            if (stoe > exports.m / 2) stoe -= exports.m;
+            if (stoe > m / 2) stoe -= m;
             pcarr[i].pc = modularize(tmp_pcs[i] + (adj * stoe));
             var pos = pcPos(pcarr[i].pc);
             //set the circle position
@@ -223,12 +219,11 @@
         }
         // now a different calculation for dot size
         for (var j = pcarr.length-1; j >= 0; j--) {
-          if (i != j && pcarr[i].pc == pcarr[j].pc
-            && pcarr[i].fixed == pcarr[j].fixed) {
+          if (pcarr[i].pc == pcarr[j].pc && pcarr[i].fixed == pcarr[j].fixed) {
               c++;
           }
         }
-        pcarr[i].dot.attr({r: (1 + c * dsize_inc) * dsize});
+        pcarr[i].dot.attr({r: Math.sqrt(c) * dsize});
       }
       function step() {
         var adj = counter/intervals;

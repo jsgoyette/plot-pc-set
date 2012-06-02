@@ -67,7 +67,7 @@
       arr = pstr.split(' ');
       for (x in arr) {
         if (!isNaN(arr[x])) {
-          outarr.push(Math.pow(arr[x], 1)); 
+          outarr.push(+arr[x]); 
         }
       }
       for (x in outarr) {
@@ -84,8 +84,13 @@
     var sg = setGraph('canvas_container');
 
     // Optional adjustments
-    //sg.m = 13; // change mod
-    //sg.configure({'radius':120, 'padding':10, 'ticksize':4, 'dotsize':5});
+    /*sg.configure({
+      'mod': 12,
+      'radius':120,
+      'padding':10,
+      'ticksize':4,
+      'dotsize':5,
+    });*/
     sg.configure({
       'dotclick': function () {
         var r = this.attr('r');
@@ -100,8 +105,8 @@
       var pcstr = $("#pcs").val();
       // convert string to array
       var pcs = pcstr2pcs(12, pcstr);
-      // plot the pcs
-      sg.plotpcs(pcs);
+      // plot the pcs (the first being fixed)
+      sg.plotpcs(pcs, 1);
     }
 
     $(document).ready(function () {
