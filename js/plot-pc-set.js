@@ -10,7 +10,7 @@
 
     var exports = {},
       paper, // Raphael object
-      pcarr = [] // array of pcobj
+      pcarr = [], // array of pcobj
       active = false,
       r = 180, // radius of big circle
       p = 30, // padding between circle and edge of canvas
@@ -21,6 +21,8 @@
       dotclick = function () {
         return false;
       };
+
+    exports.m = 12;
 
     // convert pc to range between 0 and mod
     function modularize(pc) {
