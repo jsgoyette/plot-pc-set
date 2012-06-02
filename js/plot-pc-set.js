@@ -63,12 +63,17 @@
     }
 
     var pcobj = function (p, f) {
-      this.pc = p || 0;
-      this.fixed = f || false;
+      p = p || 0;
+      f = f || false;
       var pos = pcPos(p);
-      this.dot = paper.circle(pos.x, pos.y, getdotsize(p));
-      this.dot.attr({fill: "black"});
-      this.dot.click(dotclick);
+      var dot = paper.circle(pos.x, pos.y, getdotsize(p));
+      dot.attr({fill: "black"});
+      dot.click(dotclick);
+      return {
+        'pc': p,
+        'fixed': f,
+        'dot': dot
+      };
     }
 
     exports.configure = function (opts) {
@@ -101,7 +106,7 @@
       // make array of pcobj
       for (var i = pcs.length-1; i >= 0; i--) {
         var f = (i >= fix) ? false : true;
-        var obj = new pcobj(pcs[i], f);
+        var obj = pcobj(pcs[i], f);
         pcarr.unshift(obj);
       }
       positiondots();
