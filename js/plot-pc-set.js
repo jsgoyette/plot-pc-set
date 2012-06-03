@@ -1,4 +1,12 @@
-(function ( window ) {
+/*
+ * plot-pc-set.js - Draw and animate pitch class sets.
+ * Copyright (c) 2012 Jeremiah Goyette
+ * Under MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ */
+
+(function (window) {
   'use strict';
 
   function roundNumber(n, dec) {

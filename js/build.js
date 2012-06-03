@@ -4,7 +4,7 @@ var fs = require('fs'),
   uglify = require('uglify-js')
 
 var pcJS = fs.readFileSync(__dirname + '/plot-pc-set.js').toString(),
-  copy = '/* Copyright (c) 2012 Jeremiah Goyette */'
+  copy = '/* plot-pc-set.js\n * Copyright (c) 2012 Jeremiah Goyette\n */'
 
 console.log('building and minifying...')
 buildFile(pcJS, 'plot-pc-set.min.js')
