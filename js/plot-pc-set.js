@@ -9,7 +9,7 @@
   var sg = window.setGraph = function (id) {
 
     var exports = {},
-      paper,  // Raphael object
+      paper = null,  // Raphael object
       active = false,
       pcarr = [], // array of pcobj
       m = 12, // modulus
@@ -30,6 +30,7 @@
       return roundNumber(pc, 2);
     }
 
+    // calculate pc position
     function pcPos(pc) {
       var cos = Math.cos(pc / m * 2 * Math.PI);
       var sin = Math.sin(pc / m * 2 * Math.PI);
@@ -40,25 +41,33 @@
     }
 
     //determine dot size for multisets
-    function getdotsize(pc) {
-      var i, c = 0;
+    function getdotsizes() {
+      var i, j, c, 
+        sizes = Array(pcarr.length);
       for (i = pcarr.length-1; i >= 0; i--) {
-        if (pcarr[i].pc == pc) {
-          c++;
+        c = 0;
+        for (j = pcarr.length-1; j >= 0; j--) {
+          if (j > i && pcarr[i].pc == pcarr[j].pc) {
+            sizes[i] = sizes[j];
+            break;
+          }
+          if (pcarr[i].pc == pcarr[j].pc) {
+            c++;
+          }
         }
+        sizes[i] = sizes[i] || Math.sqrt(c) * dsize;
       }
-      return Math.sqrt(c) * dsize;
+      return sizes;
     }
 
     function positiondots() {
+      var sizes = getdotsizes();
       for (var i = pcarr.length-1; i >= 0; i--) {
-        if (!pcarr[i].fixed) {
-          //set the circle position
-          var pos = pcPos(pcarr[i].pc);
-          pcarr[i].dot.attr({cx: pos.x, cy: pos.y});
-        }
+        // set the dot position
+        var pos = pcPos(pcarr[i].pc);
+        pcarr[i].dot.attr({cx: pos.x, cy: pos.y});
         // adjust dot size
-        pcarr[i].dot.attr({r: getdotsize(pcarr[i].pc)});
+        pcarr[i].dot.attr({r: sizes[i]});
       }
     }
 
@@ -66,7 +75,7 @@
       p = p || 0;
       f = f || false;
       var pos = pcPos(p);
-      var dot = paper.circle(pos.x, pos.y, getdotsize(p));
+      var dot = paper.circle(pos.x, pos.y, dsize);
       dot.attr({fill: "black"});
       dot.click(dotclick);
       return {
@@ -103,7 +112,7 @@
         var dot = paper.circle(pos.x, pos.y, tsize);
         dot.attr({fill: "white"});
       }
-      // make array of pcobj
+      // make pcarr, which is array of pcobj
       for (var i = pcs.length-1; i >= 0; i--) {
         var f = (i >= fix) ? false : true;
         var obj = pcobj(pcs[i], f);
@@ -175,8 +184,8 @@
       var counter = 0,
         tmp_pcs = exports.getpcs();
       function step() {
-        var adj = counter/animints;
-        for (var i = pcarr.length-1; i >= 0; i--) {
+        var i, sizes, adj = counter/animints;
+        for (i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed) {
             // ordered interval from start to end
             var stoe = modularize(index - 2 * tmp_pcs[i]);
@@ -187,7 +196,10 @@
             //set the circle position
             pcarr[i].dot.attr({cx: pos.x, cy: pos.y});
           }
-          pcarr[i].dot.attr({r: getdotsize(pcarr[i].pc)});
+        }
+        sizes = getdotsizes();
+        for (var i = pcarr.length-1; i >= 0; i--) {
+          pcarr[i].dot.attr({r: sizes[i]});
         }
         if (callback && typeof callback === 'function') {
           callback();
@@ -207,11 +219,12 @@
     exports.animInvertDirect = function (index, callback) {
       if (active) return;
       active = true;
-      var counter = 0,
+      var i, j, c,
+        counter = 0,
         spos = [],
         epos = [];
-      for (var i = pcarr.length-1; i >= 0; i--) {
-        var c = 0;
+      for (i = pcarr.length-1; i >= 0; i--) {
+        c = 0;
         if (!pcarr[i].fixed) {
           spos.unshift(pcPos(pcarr[i].pc));
           epos.unshift(pcPos(modularize(index-pcarr[i].pc)));
@@ -221,7 +234,7 @@
           epos.unshift(0);
         }
         // now a different calculation for dot size
-        for (var j = pcarr.length-1; j >= 0; j--) {
+        for (j = pcarr.length-1; j >= 0; j--) {
           if (pcarr[i].pc == pcarr[j].pc && pcarr[i].fixed == pcarr[j].fixed) {
               c++;
           }
@@ -229,12 +242,13 @@
         pcarr[i].dot.attr({r: Math.sqrt(c) * dsize});
       }
       function step() {
-        var adj = counter/animints;
-        for (var i = pcarr.length-1; i >= 0; i--) {
+        var i, nx, ny,
+          adj = counter/animints;
+        for (i = pcarr.length-1; i >= 0; i--) {
           // set dot position if pc is not fixed
           if (!pcarr[i].fixed) {
-            var nx = spos[i].x + adj * (epos[i].x - spos[i].x),
-               ny = spos[i].y + adj * (epos[i].y - spos[i].y);
+            nx = spos[i].x + adj * (epos[i].x - spos[i].x);
+            ny = spos[i].y + adj * (epos[i].y - spos[i].y);
             pcarr[i].dot.attr({cx: nx, cy: ny});
           }
         }
@@ -243,13 +257,15 @@
             step();
           }, 10);
         } else {
+          var i, sizes;
           // invert pcs
-          for (var i = pcarr.length-1; i >= 0; i--) {
+          for (i = pcarr.length-1; i >= 0; i--) {
             if (!pcarr[i].fixed) pcarr[i].pc = modularize(index-pcarr[i].pc);
           }
+          sizes = getdotsizes();
           //separate for loop for dot sizes since pcs need to be inverted first
-          for (var i = pcarr.length-1; i >= 0; i--) {
-            pcarr[i].dot.attr({r: getdotsize(pcarr[i].pc)});
+          for (i = pcarr.length-1; i >= 0; i--) {
+            pcarr[i].dot.attr({r: sizes[i]});
           }
           if (callback && typeof callback === 'function') {
             callback();
