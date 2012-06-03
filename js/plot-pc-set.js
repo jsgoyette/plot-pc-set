@@ -1,5 +1,5 @@
 (function ( window ) {
-  "use strict";
+  'use strict';
 
   function roundNumber(n, dec) {
     return Math.round(n * Math.pow(10, dec)) / Math.pow(10, dec);
@@ -75,7 +75,7 @@
       f = f || false;
       var pos = pcPos(p),
         dot = paper.circle(pos.x, pos.y, dsize);
-      dot.attr({fill: "black"});
+      dot.attr({fill: 'black'});
       dot.click(dotclick);
       return {
         'pc': p,
@@ -109,7 +109,7 @@
       for (var i = 0; i < m; i++) {
         var pos = pcPos(i);
         var dot = paper.circle(pos.x, pos.y, tsize);
-        dot.attr({fill: "white"});
+        dot.attr({fill: 'white'});
       }
       // make pcarr, which is array of pcobj
       for (var i = pcs.length-1; i >= 0; i--) {
