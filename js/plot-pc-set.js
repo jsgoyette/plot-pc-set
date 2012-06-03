@@ -2,8 +2,7 @@
   "use strict";
 
   function roundNumber(n, dec) {
-    var result = Math.round(n * Math.pow(10, dec)) / Math.pow(10, dec);
-    return result;
+    return Math.round(n * Math.pow(10, dec)) / Math.pow(10, dec);
   }
 
   var sg = window.setGraph = function (id) {
@@ -61,8 +60,8 @@
     }
 
     function positiondots() {
-      var sizes = getdotsizes();
-      for (var i = pcarr.length-1; i >= 0; i--) {
+      var i, sizes = getdotsizes();
+      for (i = pcarr.length-1; i >= 0; i--) {
         // set the dot position
         var pos = pcPos(pcarr[i].pc);
         pcarr[i].dot.attr({cx: pos.x, cy: pos.y});
@@ -74,8 +73,8 @@
     var pcobj = function (p, f) {
       p = p || 0;
       f = f || false;
-      var pos = pcPos(p);
-      var dot = paper.circle(pos.x, pos.y, dsize);
+      var pos = pcPos(p),
+        dot = paper.circle(pos.x, pos.y, dsize);
       dot.attr({fill: "black"});
       dot.click(dotclick);
       return {
@@ -122,8 +121,8 @@
     }
 
     exports.getpcs = function () {
-      var pcs = [];
-      for (var i = pcarr.length-1; i >= 0; i--) {
+      var i, pcs = [];
+      for (i = pcarr.length-1; i >= 0; i--) {
         pcs.unshift(pcarr[i].pc)
       }
       return pcs;
@@ -143,11 +142,11 @@
     exports.animTranspose = function (tn, callback) {
       if (active) return;
       active = true;
-      var counter = 0,
+      var i, adj, counter = 0,
         tmp_pcs = exports.getpcs();
       function step() {
-        var adj = (tn * counter / animints);
-        for (var i = pcarr.length-1; i >= 0; i--) {
+        adj = (tn * counter / animints);
+        for (i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed)
             pcarr[i].pc = modularize(tmp_pcs[i] + adj);
         }
@@ -184,21 +183,22 @@
       var counter = 0,
         tmp_pcs = exports.getpcs();
       function step() {
-        var i, sizes, adj = counter/animints;
+        var i, pos, sizes, stoe,
+          adj = counter/animints;
         for (i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed) {
             // ordered interval from start to end
-            var stoe = modularize(index - 2 * tmp_pcs[i]);
+            stoe = modularize(index - 2 * tmp_pcs[i]);
             // go the shortest route
             if (stoe > m / 2) stoe -= m;
             pcarr[i].pc = modularize(tmp_pcs[i] + (adj * stoe));
-            var pos = pcPos(pcarr[i].pc);
+            pos = pcPos(pcarr[i].pc);
             //set the circle position
             pcarr[i].dot.attr({cx: pos.x, cy: pos.y});
           }
         }
         sizes = getdotsizes();
-        for (var i = pcarr.length-1; i >= 0; i--) {
+        for (i = pcarr.length-1; i >= 0; i--) {
           pcarr[i].dot.attr({r: sizes[i]});
         }
         if (callback && typeof callback === 'function') {
@@ -257,7 +257,7 @@
             step();
           }, 10);
         } else {
-          var i, sizes;
+          var sizes;
           // invert pcs
           for (i = pcarr.length-1; i >= 0; i--) {
             if (!pcarr[i].fixed) pcarr[i].pc = modularize(index-pcarr[i].pc);
