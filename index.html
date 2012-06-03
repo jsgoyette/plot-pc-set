@@ -53,12 +53,13 @@
       </div>
     </div>
   </div>
+  <script src="js/ready.min.js" type="text/javascript"></script>
   <script src="js/raphael-min.js" type="text/javascript"></script>
   <script src="js/plot-pc-set.js" type="text/javascript"></script>
   <script type="text/javascript">
 
     // first, a little selector function (in place of JQuery, et al)
-    var $ = function ( selector, context ) {
+    var $ = function (selector, context) {
         context = context || document;
         return context.querySelector(selector);
     };
@@ -116,7 +117,7 @@
       sg.plotpcs(pcs, +fixed);
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    domready(function() {
 
       // draw the set
       engage();
