@@ -20,8 +20,10 @@
         <div class="well">
           <form id="pcsform">
             <label>Pitch classes</label>
-            <input type="text" id="pcs" class="span3" value="8 8 9 0 2"><br>
-            <button type="submit" class="btn">Plot</button>
+            <input type="text" id="pcs" class="span3" value="8 8 9 0 1 2 2 4"><br>
+            <label>Number of fixed pcs</label>
+            <input type="text" id="fixed" class="span1" value="2"><br>
+            <button type="submit" class="btn">Plot</button><br>
           </form>
         </div>
         <div class="well">
@@ -103,10 +105,11 @@
     function engage() { 
       // get the pitch classes from the input
       var pcstr = $("#pcs").val();
+      var fixed = $("#fixed").val();
       // convert string to array
       var pcs = pcstr2pcs(12, pcstr);
       // plot the pcs (the first of which is fixed)
-      sg.plotpcs(pcs, 1);
+      sg.plotpcs(pcs, +fixed);
     }
 
     $(document).ready(function () {
