@@ -1,5 +1,6 @@
 /*
  * plot-pc-set.js - Draw and animate pitch class sets.
+ * https://github.com/jsgoyette/plot-pc-set
  * Copyright (c) 2012 Jeremiah Goyette
  * Under MIT license:
  * http://www.opensource.org/licenses/mit-license.php
