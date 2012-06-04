@@ -294,4 +294,4 @@
     return exports;
   };
 
-}(docnument, window));
+}(document, window));
