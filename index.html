@@ -107,6 +107,10 @@
       }
     });
 
+    function showpcs() {
+      $('#pcs').value = sg.getpcs().join(" ");
+    }
+
     function engage() { 
       // get the pitch classes from the input
       var pcstr = $('#pcs').value;
@@ -128,17 +132,11 @@
       // For animTranspose and animInvert the callback calls at each step of the animation, 
       // but for the other functions the callback is only fired upon completion.
       setTimeout(function() { 
-        sg.animTranspose(6, function () {
-          $('#pcs').value = sg.getpcs().join(" ");
-        });
+        sg.animTranspose(6, showpcs);
         setTimeout(function() { 
-          sg.animInvert(0, function () {
-            $('#pcs').value = sg.getpcs().join(" ");
-          });
+          sg.animInvert(0, showpcs);
           setTimeout(function() { 
-            sg.animInvertDirect(10, function () {
-              $('#pcs').value = sg.getpcs().join(" ");
-            });
+            sg.animInvertDirect(10, showpcs);
           }, 1000);
         }, 1000);
       }, 1000);
@@ -149,15 +147,11 @@
         return false;
       };
       $('#tnform').onsubmit = function() {
-        sg.animTranspose($('#tn').value, function () {
-          $('#pcs').value = sg.getpcs().join(" ");
-        });
+        sg.animTranspose($('#tn').value, showpcs);
         return false;
       };
       $('#invform').onsubmit = function() {
-        sg.animInvertDirect($('#in').value, function () {
-          $('#pcs').value = sg.getpcs().join(" ");
-        });
+        sg.animInvertDirect($('#in').value, showpcs);
         return false;
       };
       $('#pcs').focus();
