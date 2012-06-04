@@ -58,10 +58,9 @@
   <script src="js/plot-pc-set.js" type="text/javascript"></script>
   <script type="text/javascript">
 
-    // first, a little selector function (in place of JQuery, et al)
-    var $ = function (selector, context) {
-        context = context || document;
-        return context.querySelector(selector);
+    // first, a little selector function
+    var byId = function (id) {
+        return document.getElementById(id);
     };
 
     // a function to turn pc string into array
@@ -107,14 +106,14 @@
       }
     });
 
-    function showpcs() {
-      $('#pcs').value = sg.getpcs().join(" ");
+    var showpcs = function () {
+      byId('pcs').value = sg.getpcs().join(" ");
     }
 
-    function engage() { 
+    var engage = function () { 
       // get the pitch classes from the input
-      var pcstr = $('#pcs').value;
-      var fixed = $('#fixed').value;
+      var pcstr = byId('pcs').value;
+      var fixed = byId('fixed').value;
       // convert string to array
       var pcs = pcstr2pcs(12, pcstr);
       // plot the pcs (the first of which are fixed)
@@ -142,19 +141,19 @@
       }, 1000);
 
       // set up listeners
-      $('#pcsform').onsubmit = function() {
+      byId('pcsform').onsubmit = function() {
         engage();
         return false;
       };
-      $('#tnform').onsubmit = function() {
-        sg.animTranspose($('#tn').value, showpcs);
+      byId('tnform').onsubmit = function() {
+        sg.animTranspose(byId('tn').value, showpcs);
         return false;
       };
-      $('#invform').onsubmit = function() {
-        sg.animInvertDirect($('#in').value, showpcs);
+      byId('invform').onsubmit = function() {
+        sg.animInvertDirect(byId('in').value, showpcs);
         return false;
       };
-      $('#pcs').focus();
+      byId('pcs').focus();
 
     });
   </script>
