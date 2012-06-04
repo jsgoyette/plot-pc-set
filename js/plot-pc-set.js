@@ -5,7 +5,7 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-(function (window) {
+(function (document, window) {
   'use strict';
 
   function roundNumber(n, dec) {
@@ -49,7 +49,7 @@
     //determine dot size for multisets
     function getdotsizes() {
       var i, j, c, 
-        sizes = Array(pcarr.length);
+        sizes = new Array(pcarr.length);
       for (i = pcarr.length-1; i >= 0; i--) {
         c = 0;
         for (j = pcarr.length-1; j >= 0; j--) {
@@ -89,7 +89,7 @@
         'fixed': f,
         'dot': dot
       };
-    }
+    };
 
     exports.configure = function (opts) {
       m = opts.mod || m;
@@ -99,7 +99,7 @@
       tsize = opts.ticksize || tsize;
       dsize = opts.dotsize || dsize;
       dotclick = opts.dotclick && typeof opts.dotclick === 'function' ? opts.dotclick : dotclick;
-    }
+    };
 
     exports.plotpcs = function (pcs, fix) {
       if (paper) {
@@ -110,30 +110,31 @@
       fix = fix || 0;
       paper = new Raphael(document.getElementById(id), csize, csize);
       // make big circle
-      var circle = paper.circle(r + p, r + p, r);
+      var i,
+        circle = paper.circle(r + p, r + p, r);
       circle.attr({'stroke-width': 4});
       // make ticks
-      for (var i = 0; i < m; i++) {
+      for (i = 0; i < m; i++) {
         var pos = pcPos(i);
         var dot = paper.circle(pos.x, pos.y, tsize);
         dot.attr({fill: 'white'});
       }
       // make pcarr, which is array of pcobj
-      for (var i = pcs.length-1; i >= 0; i--) {
+      for (i = pcs.length-1; i >= 0; i--) {
         var f = (i >= fix) ? false : true;
         var obj = pcobj(pcs[i], f);
         pcarr.unshift(obj);
       }
       positiondots();
-    }
+    };
 
     exports.getpcs = function () {
       var i, pcs = [];
       for (i = pcarr.length-1; i >= 0; i--) {
-        pcs.unshift(pcarr[i].pc)
+        pcs.unshift(pcarr[i].pc);
       }
       return pcs;
-    }
+    };
 
     exports.transpose = function (tn, callback) {
       for (var i = pcarr.length-1; i >= 0; i--) {
@@ -144,7 +145,7 @@
       if (callback && typeof callback === 'function') {
         callback();
       }
-    }
+    };
 
     exports.animTranspose = function (tn, callback) {
       if (active) return;
@@ -171,7 +172,7 @@
         counter++;
       }
       step();
-    }
+    };
 
     exports.invert = function (index, callback) {
       for (var i = pcarr.length-1; i >= 0; i--) {
@@ -182,7 +183,7 @@
       if (callback && typeof callback === 'function') {
         callback();
       }
-    }
+    };
 
     exports.animInvert = function (index, callback) {
       if (active) return;
@@ -221,7 +222,7 @@
         counter++;
       }
       step();
-    }
+    };
 
     exports.animInvertDirect = function (index, callback) {
       if (active) return;
@@ -282,15 +283,15 @@
         counter++;
       }
       step();
-    }
+    };
 
     exports.clear = function () {
       if (!paper) return;
       var paperDom = paper.canvas;
       paperDom.parentNode.removeChild(paperDom);
-    }
+    };
 
     return exports;
-  }
+  };
 
-}(window));
+}(docnument, window));
