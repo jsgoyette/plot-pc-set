@@ -108,7 +108,7 @@
 
     var showpcs = function () {
       byId('pcs').value = sg.getpcs().join(" ");
-    }
+    };
 
     var engage = function () { 
       // get the pitch classes from the input
@@ -118,7 +118,7 @@
       var pcs = pcstr2pcs(12, pcstr);
       // plot the pcs (the first of which are fixed)
       sg.plotpcs(pcs, +fixed);
-    }
+    };
 
     domready(function() {
 
