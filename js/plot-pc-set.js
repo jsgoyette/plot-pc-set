@@ -163,7 +163,7 @@
           callback();
         }
         if (counter < animints) {
-          setTimeout(function() {
+          window.setTimeout(function() {
             step();
           }, 10);
         } else {
@@ -213,7 +213,7 @@
           callback();
         }
         if (counter < animints) {
-          setTimeout(function() {
+          window.setTimeout(function() {
             step();
           }, 10);
         } else {
@@ -261,7 +261,7 @@
           }
         }
         if (counter < animints) {
-          setTimeout(function() {
+          window.setTimeout(function() {
             step();
           }, 10);
         } else {
