@@ -49,7 +49,7 @@
 
     //determine dot size for multisets
     function getdotsizes() {
-      var i, j, c, 
+      var i, j, c,
         sizes = new Array(pcarr.length);
       for (i = pcarr.length-1; i >= 0; i--) {
         c = 0;
@@ -153,7 +153,7 @@
       active = true;
       var i, adj, counter = 0,
         tmp_pcs = exports.getpcs();
-      function step() {
+      (function step() {
         adj = (tn * counter / animints);
         for (i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed)
@@ -171,8 +171,7 @@
           active = false;
         }
         counter++;
-      }
-      step();
+      }());
     };
 
     exports.invert = function (index, callback) {
@@ -191,7 +190,7 @@
       active = true;
       var counter = 0,
         tmp_pcs = exports.getpcs();
-      function step() {
+      (function step() {
         var i, pos, sizes, stoe,
           adj = counter/animints;
         for (i = pcarr.length-1; i >= 0; i--) {
@@ -221,8 +220,7 @@
           active = false;
         }
         counter++;
-      }
-      step();
+      }());
     };
 
     exports.animInvertDirect = function (index, callback) {
@@ -250,7 +248,7 @@
         }
         pcarr[i].dot.attr({r: Math.sqrt(c) * dsize});
       }
-      function step() {
+      (function step() {
         var i, nx, ny,
           adj = counter/animints;
         for (i = pcarr.length-1; i >= 0; i--) {
@@ -282,8 +280,7 @@
           active = false;
         }
         counter++;
-      }
-      step();
+      }());
     };
 
     exports.clear = function () {
