@@ -26,9 +26,9 @@
         <div class="well">
           <form id="pcsform">
             <label>Pitch classes</label>
-            <input type="text" id="pcs" class="span3" value="8 8 9 0 1 2 2 4"><br>
+            <input type="text" id="pcs" class="span3" value="5 6 9 11 11 1"><br>
             <label>Number of fixed pcs</label>
-            <input type="text" id="fixed" class="span1" value="2"><br>
+            <input type="text" id="fixed" class="span1" value="1"><br>
             <button type="submit" class="btn">Plot</button><br>
           </form>
         </div>
@@ -131,14 +131,14 @@
       // For animTranspose and animInvert the callback calls at each step of the animation, 
       // but for the other functions the callback is only fired upon completion.
       setTimeout(function() { 
-        sg.animTranspose(6, showpcs);
+        sg.animTranspose(3, showpcs);
         setTimeout(function() { 
           sg.animInvert(0, showpcs);
           setTimeout(function() { 
             sg.animInvertDirect(10, showpcs);
-          }, 1000);
-        }, 1000);
-      }, 1000);
+          }, 1800);
+        }, 1800);
+      }, 1800);
 
       // set up listeners
       byId('pcsform').onsubmit = function() {
