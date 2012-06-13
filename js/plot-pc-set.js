@@ -25,7 +25,8 @@
       csize = 2 * (r + p), // container size
       tsize = 5, // tick size
       dsize = 8, // dot size
-      animints = 50, // num of intervals in animation (10ms each)
+      asteps = 50, // num of steps in animation (10ms each)
+      animint = 15, // time in ms between steps 
       dotclick = function () {
         return false;
       };
@@ -42,8 +43,8 @@
       var cos = Math.cos(pc / m * 2 * Math.PI);
       var sin = Math.sin(pc / m * 2 * Math.PI);
       return {
-        'x': r * sin + r + p,
-        'y': -1 * r * cos + r + p
+        'x': Math.floor(r * sin + r + p),
+        'y': Math.floor(-1 * r * cos + r + p)
       };
     }
 
@@ -154,7 +155,7 @@
       var i, adj, counter = 0,
         tmp_pcs = exports.getpcs();
       (function step() {
-        adj = (tn * counter / animints);
+        adj = (tn * counter / asteps);
         for (i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed)
             pcarr[i].pc = modularize(tmp_pcs[i] + adj);
@@ -163,10 +164,10 @@
         if (callback && typeof callback === 'function') {
           callback();
         }
-        if (counter < animints) {
+        if (counter < asteps) {
           window.setTimeout(function() {
             step();
-          }, 10);
+          }, animint);
         } else {
           active = false;
         }
@@ -192,7 +193,7 @@
         tmp_pcs = exports.getpcs();
       (function step() {
         var i, pos, sizes, stoe,
-          adj = counter/animints;
+          adj = counter/asteps;
         for (i = pcarr.length-1; i >= 0; i--) {
           if (!pcarr[i].fixed) {
             // ordered interval from start to end
@@ -212,10 +213,10 @@
         if (callback && typeof callback === 'function') {
           callback();
         }
-        if (counter < animints) {
+        if (counter < asteps) {
           window.setTimeout(function() {
             step();
-          }, 10);
+          }, animint);
         } else {
           active = false;
         }
@@ -250,7 +251,7 @@
       }
       (function step() {
         var i, nx, ny,
-          adj = counter/animints;
+          adj = counter/asteps;
         for (i = pcarr.length-1; i >= 0; i--) {
           // set dot position if pc is not fixed
           if (!pcarr[i].fixed) {
@@ -259,10 +260,10 @@
             pcarr[i].dot.attr({cx: nx, cy: ny});
           }
         }
-        if (counter < animints) {
+        if (counter < asteps) {
           window.setTimeout(function() {
             step();
-          }, 10);
+          }, animint);
         } else {
           var sizes;
           // invert pcs
