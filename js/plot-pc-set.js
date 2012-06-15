@@ -242,9 +242,9 @@
         if (!pcarr[i].fixed) {
           spos.unshift(pcPos(pcarr[i].pc));
           if (transform == 'invert')
-              epos.unshift(pcPos(modularize(index-pcarr[i].pc)));
+            epos.unshift(pcPos(modularize(index-pcarr[i].pc)));
           else
-              epos.unshift(pcPos(modularize(index+pcarr[i].pc)));
+            epos.unshift(pcPos(modularize(index+pcarr[i].pc)));
         }
         else {
           spos.unshift(0);
@@ -252,7 +252,10 @@
         }
         // now a different calculation for dot size
         for (j = pcarr.length-1; j >= 0; j--) {
-          if (pcarr[i].pc == pcarr[j].pc && pcarr[i].fixed == pcarr[j].fixed) {
+          if (pcarr[i].pc == pcarr[j].pc &&
+            (pcarr[i].fixed == pcarr[j].fixed ||
+              ((pcarr[i].fixed == false && pcarr[i].pc == modularize(index-pcarr[i].pc)) ||
+                (pcarr[j].fixed == false && pcarr[j].pc == modularize(index-pcarr[j].pc))))) {
               c++;
           }
         }
