@@ -254,9 +254,10 @@
         for (j = pcarr.length-1; j >= 0; j--) {
           if (pcarr[i].pc == pcarr[j].pc &&
             (pcarr[i].fixed == pcarr[j].fixed ||
-              ((pcarr[i].fixed == false && pcarr[i].pc == modularize(index-pcarr[i].pc)) ||
-                (pcarr[j].fixed == false && pcarr[j].pc == modularize(index-pcarr[j].pc))))) {
-              c++;
+              (transform == 'invert' && 
+                ((pcarr[i].fixed == false && pcarr[i].pc == modularize(index-pcarr[i].pc)) ||
+                  (pcarr[j].fixed == false && pcarr[j].pc == modularize(index-pcarr[j].pc)))))) {
+            c++;
           }
         }
         pcarr[i].dot.attr({r: Math.sqrt(c) * dsize});
