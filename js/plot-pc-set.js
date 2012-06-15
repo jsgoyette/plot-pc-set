@@ -26,7 +26,7 @@
       tsize = 5, // tick size
       dsize = 8, // dot size
       asteps = 50, // num of steps in animation (10ms each)
-      animint = 15, // time in ms between steps 
+      animint = 15, // time in ms between steps
       dotclick = function () {
         return false;
       };
@@ -149,7 +149,7 @@
       }
     };
 
-    exports.animTranspose = function (tn, callback) {
+    exports.animTranspose = function (tn, animcallback, callback) {
       if (active) return;
       active = true;
       var i, adj, counter = 0,
@@ -161,8 +161,8 @@
             pcarr[i].pc = modularize(tmp_pcs[i] + adj);
         }
         positiondots();
-        if (callback && typeof callback === 'function') {
-          callback();
+        if (animcallback && typeof animcallback === 'function') {
+          animcallback();
         }
         if (counter < asteps) {
           window.setTimeout(function() {
@@ -170,6 +170,9 @@
           }, animint);
         } else {
           active = false;
+          if (callback && typeof callback === 'function') {
+            callback();
+          }
         }
         counter++;
       }());
@@ -186,7 +189,7 @@
       }
     };
 
-    exports.animInvert = function (index, callback) {
+    exports.animInvert = function (index, animcallback, callback) {
       if (active) return;
       active = true;
       var counter = 0,
@@ -210,8 +213,8 @@
         for (i = pcarr.length-1; i >= 0; i--) {
           pcarr[i].dot.attr({r: sizes[i]});
         }
-        if (callback && typeof callback === 'function') {
-          callback();
+        if (animcallback && typeof animcallback === 'function') {
+          animcallback();
         }
         if (counter < asteps) {
           window.setTimeout(function() {
@@ -219,15 +222,18 @@
           }, animint);
         } else {
           active = false;
+          if (callback && typeof callback === 'function') {
+            callback();
+          }
         }
         counter++;
       }());
     };
 
-    exports.animInvertDirect = function (index, callback) {
+    exports.animDirect = function (transform, index, callback) {
       if (active) return;
       active = true;
-      var i, j, c,
+      var i, j, c, t,
         counter = 0,
         spos = [],
         epos = [];
@@ -235,7 +241,10 @@
         c = 0;
         if (!pcarr[i].fixed) {
           spos.unshift(pcPos(pcarr[i].pc));
-          epos.unshift(pcPos(modularize(index-pcarr[i].pc)));
+          if (transform == 'invert')
+              epos.unshift(pcPos(modularize(index-pcarr[i].pc)));
+          else
+              epos.unshift(pcPos(modularize(index+pcarr[i].pc)));
         }
         else {
           spos.unshift(0);
@@ -268,7 +277,13 @@
           var sizes;
           // invert pcs
           for (i = pcarr.length-1; i >= 0; i--) {
-            if (!pcarr[i].fixed) pcarr[i].pc = modularize(index-pcarr[i].pc);
+            if (!pcarr[i].fixed) {
+              if (transform == 'invert')
+                nx = modularize(index-pcarr[i].pc);
+              else
+                nx = modularize(index+pcarr[i].pc);
+              pcarr[i].pc = nx;
+            }
           }
           sizes = getdotsizes();
           //separate for loop for dot sizes since pcs need to be inverted first

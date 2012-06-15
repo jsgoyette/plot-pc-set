@@ -26,7 +26,7 @@
         <div class="well">
           <form id="pcsform">
             <label>Pitch classes</label>
-            <input type="text" id="pcs" class="span3" value="5 6 9 11 11 1"><br>
+            <input type="text" id="pcs" class="span3" value="11 6 9 11 11 1"><br>
             <label>Number of fixed pcs</label>
             <input type="text" id="fixed" class="span1" value="1"><br>
             <button type="submit" class="btn">Plot</button><br>
@@ -125,20 +125,24 @@
       // draw the set
       engage();
 
-      // The action functions of setGraph (transpose, animTranpose, invert, animInvert, and
-      // animInvertDirect) each take as the first argument the level of transposition or the
-      // index of inversion, and can also take a second argument that is a callback function.
-      // For animTranspose and animInvert the callback calls at each step of the animation, 
-      // but for the other functions the callback is only fired upon completion.
+      // Most of the action functions of setGraph (transpose, animTranpose, invert, animInvert, and
+      // animDirect) each take as the first argument the level of transposition or the index of
+      // inversion, and can also take a second argument that is a callback function. animDirect
+      // instead takes as the first argument the transformation to be executed. animTranspose and
+      // animInvert have two callbacks, one at each step of the animation and one at the end, but
+      // the other functions only have one callback, which is fired only upon completion.
       setTimeout(function() { 
         sg.animTranspose(3, showpcs);
         setTimeout(function() { 
           sg.animInvert(0, showpcs);
           setTimeout(function() { 
-            sg.animInvertDirect(10, showpcs);
-          }, 1800);
-        }, 1800);
-      }, 1800);
+            sg.animDirect('invert', 10, showpcs);
+            setTimeout(function() { 
+              sg.animDirect('transpose', 6, showpcs);
+            }, 1500);
+          }, 1500);
+        }, 1500);
+      }, 1500);
 
       // set up listeners
       byId('pcsform').onsubmit = function() {
