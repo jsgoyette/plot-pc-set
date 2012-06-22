@@ -154,7 +154,7 @@
         return false;
       };
       byId('invform').onsubmit = function() {
-        sg.animInvertDirect(byId('in').value, showpcs);
+        sg.animDirect('invert', byId('in').value, showpcs);
         return false;
       };
       byId('pcs').focus();
