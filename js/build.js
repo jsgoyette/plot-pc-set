@@ -11,10 +11,12 @@ buildFile(pcJS, 'plot-pc-set.min.js')
 console.log('done')
 
 function buildFile(js, name) {
-  var ast = uglify.parser.parse(js)
-  ast = uglify.uglify.ast_mangle(ast)
-  ast = uglify.uglify.ast_squeeze(ast)
-  var minifiedJS = uglify.uglify.gen_code(ast)
-  fs.writeFile(__dirname + '/' + name, copy + '\n' + minifiedJS)
+  // var ast = uglify.parser.parse(js)
+  // ast = uglify.uglify.ast_mangle(ast)
+  // ast = uglify.uglify.ast_squeeze(ast)
+  // var minifiedJS = uglify.uglify.gen_code(ast)
+  // fs.writeFile(__dirname + '/' + name, copy + '\n' + minifiedJS)
+  var result = uglify.minify(name);
+  console.log(result.code);
 }
 
