@@ -13,7 +13,7 @@
     return Math.round(n * Math.pow(10, dec)) / Math.pow(10, dec);
   }
 
-  var sg = window.setGraph = function (id) {
+  window.setGraph = function (id) {
 
     var exports = {},
       paper = null,  // Raphael object
@@ -233,7 +233,7 @@
     exports.animDirect = function (transform, index, callback) {
       if (active) return;
       active = true;
-      var i, j, c, t,
+      var i, j, c,
         counter = 0,
         spos = [],
         epos = [];
@@ -254,9 +254,9 @@
         for (j = pcarr.length-1; j >= 0; j--) {
           if (pcarr[i].pc == pcarr[j].pc &&
             (pcarr[i].fixed == pcarr[j].fixed ||
-              (transform == 'invert' && 
-                ((pcarr[i].fixed == false && pcarr[i].pc == modularize(index-pcarr[i].pc)) ||
-                  (pcarr[j].fixed == false && pcarr[j].pc == modularize(index-pcarr[j].pc)))))) {
+              (transform == 'invert' &&
+                ((pcarr[i].fixed === false && pcarr[i].pc == modularize(index-pcarr[i].pc)) ||
+                  (pcarr[j].fixed === false && pcarr[j].pc == modularize(index-pcarr[j].pc)))))) {
             c++;
           }
         }

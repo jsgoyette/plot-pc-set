@@ -49,13 +49,13 @@
       </div>
       <div class="span2">&nbsp;</div>
       <div class="span6">
-        <div id="canvas_container"></div> 
+        <div id="canvas_container"></div>
       </div>
     </div>
   </div>
   <script src="js/ready.min.js" type="text/javascript"></script>
   <script src="js/raphael-min.js" type="text/javascript"></script>
-  <script src="js/plot-pc-set.js" type="text/javascript"></script>
+  <script src="js/plot-pc-set.min.js" type="text/javascript"></script>
   <script type="text/javascript">
 
     // first, a little selector function
@@ -73,7 +73,7 @@
       arr = pstr.split(' ');
       for (x in arr) {
         if (!isNaN(arr[x])) {
-          outarr.push(+arr[x]); 
+          outarr.push(+arr[x]);
         }
       }
       for (x in outarr) {
@@ -110,7 +110,7 @@
       byId('pcs').value = sg.getpcs().join(" ");
     };
 
-    var engage = function () { 
+    var engage = function () {
       // get the pitch classes from the input
       var pcstr = byId('pcs').value;
       var fixed = byId('fixed').value;
@@ -131,13 +131,13 @@
       // instead takes as the first argument the transformation to be executed. animTranspose and
       // animInvert have two callbacks, one at each step of the animation and one at the end, but
       // the other functions only have one callback, which is fired only upon completion.
-      setTimeout(function() { 
+      setTimeout(function() {
         sg.animTranspose(3, showpcs);
-        setTimeout(function() { 
+        setTimeout(function() {
           sg.animInvert(0, showpcs);
-          setTimeout(function() { 
+          setTimeout(function() {
             sg.animDirect('invert', 10, showpcs);
-            setTimeout(function() { 
+            setTimeout(function() {
               sg.animDirect('transpose', 6, showpcs);
             }, 1500);
           }, 1500);
